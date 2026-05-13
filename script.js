@@ -25,13 +25,20 @@ window.addEventListener("scroll", () => {
   let current = "";
   sections.forEach(section => {
     const sectionTop = section.offsetTop - 100;
-    if (pageYOffset >= sectionTop) current = section.getAttribute("id");
+    if (window.scrollY >= sectionTop) current = section.getAttribute("id");
   });
   navItems.forEach(link => {
     link.classList.remove("active");
     if (current && link.getAttribute("href").includes(current)) {
       link.classList.add("active");
     }
+  });
+});
+
+// Close mobile menu on link click
+navItems.forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
   });
 });
 

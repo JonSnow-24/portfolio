@@ -207,8 +207,13 @@ nav {
 }
 
 /* underline animation */
-.nav-links a:hover::after {
+.nav-links a:hover::after,
+.nav-links a.active::after {
   width: 100%;
+}
+
+.nav-links a.active {
+  color: var(--accent);
 }
 
 #hero,
@@ -668,15 +673,37 @@ footer {
 /* 📱 Mobile Devices */
 
 @media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
 
   .nav-links {
     display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 15, 0.95);
+    padding: 2rem;
+    gap: 1.5rem;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 0, 0, 0.2);
+    text-align: center;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    justify-content: center;
+    width: 100%;
   }
 
   nav {
-    justify-content: flex-start;
+    justify-content: space-between;
   }
-
 }
 
 @media (max-width: 600px) {
