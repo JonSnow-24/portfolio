@@ -16,6 +16,7 @@ const navLinks = document.querySelector('.nav-links');
 
 if (menuToggle) {
   menuToggle.addEventListener('click', () => {
+    menuToggle.classList.toggle('active');
     navLinks.classList.toggle('active');
   });
 }
@@ -40,6 +41,7 @@ window.addEventListener("scroll", () => {
 // Close mobile menu on link click
 navItems.forEach(link => {
   link.addEventListener('click', () => {
+    menuToggle.classList.remove('active');
     navLinks.classList.remove('active');
   });
 });

@@ -27,6 +27,7 @@ body {
   height: 4px;
   background: linear-gradient(to right, red, orange);
   z-index: 9999;
+  transition: width 0.2s ease-out;
 }
 
 h1,
@@ -146,6 +147,7 @@ nav {
   height: 3px;
   background: white;
   border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
 /* top line (long) */
@@ -162,6 +164,20 @@ nav {
 /* bottom line (long) */
 .menu-toggle span:nth-child(3) {
   width: 28px;
+}
+
+/* Toggle Animation */
+.menu-toggle.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 .nav-links {
