@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="Calci.css">
+</head>
+
+<body>
+
+    <div id="calcScreen" class="calculator">
+
+        <!-- DISPLAY -->
+        <input type="text" id="display" disabled>
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <button id="historyBtn" onclick="showHistory()">H</button>
+            <button id="sciBtn" onclick="toggleSci()">Sci</button>
+        </div>
+
+        <!-- BUTTONS WRAPPER -->
+        <!-- BUTTONS WRAPPER -->
+        <div id="buttonsSection">
+            <!-- Row 1 -->
+            <button onclick="clearDisplay()">AC</button>
+            <button onclick="backspace()">⌫</button>
+            <button onclick="percentage()">%</button>
+            <button onclick="appendValue('/')">/</button>
+            <button class="sci-btn" onclick="appendValue('sin(')">sin</button>
+            <button class="sci-btn" onclick="appendValue('asin(')">sin⁻¹</button>
+            <button class="sci-btn" onclick="appendValue('sqrt(')">√</button>
+
+            <!-- Row 2 -->
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('*')">*</button>
+            <button class="sci-btn" onclick="appendValue('cos(')">cos</button>
+            <button class="sci-btn" onclick="appendValue('acos(')">cos⁻¹</button>
+            <button class="sci-btn" onclick="appendValue('**')">x²</button>
+
+            <!-- Row 3 -->
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('-')">-</button>
+            <button class="sci-btn" onclick="appendValue('tan(')">tan</button>
+            <button class="sci-btn" onclick="appendValue('atan(')">tan⁻¹</button>
+            <button class="sci-btn" onclick="appendValue('(')">(</button>
+
+            <!-- Row 4 -->
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('+')">+</button>
+            <button class="sci-btn" onclick="appendValue('log(')">log</button>
+            <button class="sci-btn" onclick="appendValue('PI')">π</button>
+            <button class="sci-btn" onclick="appendValue(')')">)</button>
+
+            <!-- Row 5 -->
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="appendValue('0')">0</button>
+            <button id="eqBtn" onclick="calculate()">=</button>
+            <button class="sci-btn" onclick="appendValue('E')">e</button>
+            <button class="sci-btn" onclick="appendValue('°')">°</button>
+        </div>
+
+        <!-- HISTORY SECTION (same box me) -->
+        <div id="historySection">
+
+            <div class="top-bar">
+                <button id="backBtn" onclick="showButtons()">←</button>
+                <span>History</span>
+            </div>
+
+            <div id="history"></div>
+            <button id="clearBtn" onclick="clearHistory()">Clear</button>
+
+        </div>
+
+    </div>
+
+    <script src="Calci.js"></script>
+</body>
+
+</html>
