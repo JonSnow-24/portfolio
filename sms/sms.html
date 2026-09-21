@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="EduManage Student Management System - manage students, attendance and academic records efficiently." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27%23635bff%27/%3E%3Ctext x=%2750%27 y=%2767%27 font-size=%2758%27 text-anchor=%27middle%27 fill=%27white%27%3EE%3C/text%3E%3C/svg%3E" />
+    <title>Student Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="sms.css" />
+  </head>
+
+  <body>
+    <!-- ================= SIDEBAR OVERLAY ================= -->
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="
+        closeSidebar();
+        closeAttendanceHistoryPanel();
+      "
+    ></div>
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <div>
+            <h2>EduManage</h2>
+            <span>Student System</span>
+          </div>
+        </div>
+        <button class="close-sidebar" onclick="closeSidebar()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-link active" onclick="closeSidebar()">
+          <i class="fa-solid fa-house"></i>
+          <span>Dashboard</span>
+        </a>
+        <a
+          href="#"
+          class="nav-link"
+          onclick="
+            openAttendanceHistoryPanel();
+            closeSidebar();
+            return false;
+          "
+        >
+          <i class="fa-solid fa-calendar-days"></i>
+          <span>Attendance</span>
+        </a>
+        <a href="#students" class="nav-link" onclick="closeSidebar()">
+          <i class="fa-solid fa-users"></i>
+          <span>Students</span>
+        </a>
+        <a
+          href="#"
+          class="nav-link"
+          onclick="
+            openForm();
+            closeSidebar();
+            return false;
+          "
+        >
+          <i class="fa-solid fa-user-plus"></i>
+          <span>Add Student</span>
+        </a>
+      </nav>
+      <div class="sidebar-bottom">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div>
+          <strong>Local Storage</strong>
+          <small>Data saved locally</small>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+      <!-- ================= TOPBAR ================= -->
+      <header class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="mobile-brand">
+          <i class="fa-solid fa-graduation-cap"></i> EduManage
+        </div>
+        <div class="welcome">
+          <span>Student Management</span>
+          <h1>Dashboard</h1>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn theme-btn" onclick="toggleDarkMode()">
+            <i id="themeIcon" class="fa-solid fa-moon"></i>
+          </button>
+          <div class="notification-wrapper">
+            <button
+              class="icon-btn"
+              id="notificationToggle"
+              onclick="toggleNotificationPanel()"
+              aria-label="Toggle notifications">
+              <i class="fa-regular fa-bell"></i>
+                <span class="notification-dot" id="notificationBadge"></span>
+            </button>
+            <div class="notification-panel" id="notificationPanel">
+              <div class="notification-header">
+                <h3>Notifications</h3>
+                <div class="notification-actions">
+                  <button
+                    class="notification-action-btn"
+                    onclick="markAllNotificationsRead()"
+                    aria-label="Mark all notifications as read"
+                  >
+                    Mark all read
+                  </button>
+                  <button
+                    class="notification-action-btn danger"
+                    onclick="clearNotifications()"
+                    aria-label="Clear notifications"
+                  >
+                    Clear
+                  </button>
+                  <button
+                    class="notification-close"
+                    onclick="toggleNotificationPanel()"
+                    aria-label="Close notifications"
+                  >
+                    <i class="fa-solid fa-xmark"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="notification-list" id="notificationList"></div>
+            </div>
+          </div>
+          <div class="profile-mini">
+            <div class="profile-avatar">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- ================= HERO ================= -->
+      <section class="hero">
+        <div>
+          <span class="hero-label">
+            <i class="fa-solid fa-chart-line"></i> Academic Overview
+          </span>
+          <h2>Manage your students efficiently.</h2>
+          <p>
+            Add, edit, search and manage student records from one simple
+            dashboard.
+          </p>
+        </div>
+        <button class="primary-btn" onclick="openForm()">
+          <i class="fa-solid fa-plus"></i> Add Student
+        </button>
+      </section>
+      <!-- ================= STATISTICS ================= -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fa-solid fa-users"></i></div>
+          <div>
+            <span>Total Students</span>
+            <h3 id="totalStudents">0</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange"><i class="fa-solid fa-book-open"></i></div>
+          <div>
+            <span>Total Courses</span>
+            <h3 id="totalCourses">0</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon purple"><i class="fa-solid fa-mars"></i></div>
+          <div>
+            <span>Male Students</span>
+            <h3 id="maleStudents">0</h3>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon pink"><i class="fa-solid fa-venus"></i></div>
+          <div>
+            <span>Female Students</span>
+            <h3 id="femaleStudents">0</h3>
+          </div>
+        </div>
+        <div id="courseStats" class="course-stats"></div>
+      </section>
+
+      <!-- ================= ATTENDANCE ================= -->
+      <section class="attendance-section" id="attendance">
+        <div class="section-header">
+          <div>
+            <span class="section-label"> ATTENDANCE </span>
+            <h2>Today's Attendance</h2>
+          </div>
+        </div>
+
+        <div class="attendance-summary">
+          <div class="attendance-stat">
+            <span>Total</span>
+            <h3 id="attendanceTotal">0</h3>
+          </div>
+          <div class="attendance-stat present">
+            <span>Present</span>
+            <h3 id="attendancePresent">0</h3>
+          </div>
+          <div class="attendance-stat absent">
+            <span>Absent</span>
+            <h3 id="attendanceAbsent">0</h3>
+          </div>
+          <div class="attendance-stat late">
+            <span>Late</span>
+            <h3 id="attendanceLate">0</h3>
+          </div>
+        </div>
+
+        <div class="attendance-table-wrap">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Student</th>
+                <th>Status</th>
+                <th>Mark</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= STUDENTS ================= -->
+      <section class="student-section" id="students">
+        <div class="section-header">
+          <div class="section-title-row">
+            <div class="section-text">
+              <span class="section-label"> STUDENT DATABASE </span>
+              <h2>All Students</h2>
+            </div>
+            <div class="heading-controls">
+              <button class="icon-btn search-toggle-btn" id="searchToggleBtn" onclick="toggleInlineSearch()" aria-label="Toggle search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+              <select id="courseFilter" onchange="displayStudents()">
+                <option value="all">All Courses</option>
+                <option value="BCA">BCA</option>
+                <option value="BBA">BBA</option>
+                <option value="B.Com">B.Com</option>
+                <option value="BA">BA</option>
+                <option value="B.Sc">B.Sc</option>
+              </select>
+            </div>
+          </div>
+          <div class="inline-search-wrap" id="inlineSearchWrap">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search student..."
+                oninput="displayStudents()"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Photo</th>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Course</th>
+                <th>Semester</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Father Name</th>
+                <th>Mother Name</th>
+                <th>Address</th>
+                <th>DOB</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+          </table>
+          <div class="empty-message" id="emptyMessage">
+            <i class="fa-solid fa-user-graduate"></i>
+            <h3>No students found</h3>
+            <p>Add a student to start managing your database.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer>
+        <p>© 2026 EduManage • Student Management System</p>
+      </footer>
+    </main>
+
+    <!-- ================= ATTENDANCE HISTORY MODAL ================= -->
+    <div class="modal attendance-history-modal" id="attendanceHistoryModal">
+      <div class="modal-box attendance-history-box">
+        <div class="modal-header">
+          <div>
+            <span class="section-label"> HISTORY </span>
+            <h2>Attendance History</h2>
+          </div>
+          <button
+            class="modal-close"
+            onclick="closeAttendanceHistoryPanel()"
+            aria-label="Close attendance history"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="history-controls">
+          <label for="attendanceDateFilter">Select Date</label>
+
+          <div class="date-picker-wrap">
+            <input
+              type="date"
+              id="attendanceDateFilter"
+              title="Choose a date"
+              onchange="renderAttendanceHistory()"
+            />
+
+            <i class="fa-solid fa-calendar-days calendar-icon"></i>
+          </div>
+        </div>
+
+        <div class="attendance-table-wrap history-table-wrap">
+          <table class="attendance-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceHistoryBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= STUDENT MODAL ================= -->
+    <div class="modal" id="studentModal">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div>
+            <span class="section-label"> STUDENT RECORD </span>
+            <h2 id="modalTitle">Add New Student</h2>
+          </div>
+          <button class="modal-close" onclick="closeForm()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <form id="studentForm">
+          <input type="hidden" id="editIndex" />
+
+          <!-- ================= PHOTO ================= -->
+          <div class="photo-upload-section">
+            <div class="photo-preview" id="photoPreview">
+              <i class="fa-solid fa-user"></i>
+            </div>
+            <div class="photo-upload-content">
+              <h4>Student Photo</h4>
+              <p>JPG, PNG or WEBP • Max 2 MB</p>
+              <label for="studentPhoto" class="upload-btn">
+                <i class="fa-solid fa-camera"></i> Choose Photo
+              </label>
+              <input type="file" id="studentPhoto" accept="image/*" hidden />
+              <button
+                type="button"
+                class="remove-photo-btn"
+                id="removePhotoBtn"
+                onclick="removePhoto()"
+              >
+                <i class="fa-solid fa-trash"></i> Remove
+              </button>
+            </div>
+          </div>
+
+          <!-- ================= FORM ================= -->
+          <div class="form-grid">
+            <!-- NAME + STUDENT ID -->
+            <div class="input-group">
+              <label>Full Name</label>
+              <input
+                type="text"
+                id="studentName"
+                placeholder="Enter full name"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Student ID</label>
+              <input type="text" id="studentId" placeholder="e.g. BCA001" />
+            </div>
+
+            <!-- COURSE + SEMESTER -->
+            <div class="input-group">
+              <label>Course</label>
+              <select id="course" required>
+                <option value="">Select Course</option>
+                <option value="BCA">BCA</option>
+                <option value="BBA">BBA</option>
+                <option value="B.Com">B.Com</option>
+                <option value="BA">BA</option>
+                <option value="B.Sc">B.Sc</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label>Semester</label>
+              <select id="semester" required>
+                <option value="">Select Semester</option>
+                <option value="1st Semester">1st Semester</option>
+                <option value="2nd Semester">2nd Semester</option>
+                <option value="3rd Semester">3rd Semester</option>
+                <option value="4th Semester">4th Semester</option>
+                <option value="5th Semester">5th Semester</option>
+                <option value="6th Semester">6th Semester</option>
+              </select>
+            </div>
+
+            <!-- DOB + GENDER -->
+            <div class="input-group">
+              <label>Date of Birth</label>
+              <input type="date" id="dob" />
+            </div>
+
+            <div class="input-group">
+              <label>Gender</label>
+              <select id="gender">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- EMAIL + PHONE -->
+            <div class="input-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="student@email.com" />
+            </div>
+
+            <div class="input-group">
+              <label>Phone</label>
+              <input
+                type="tel"
+                id="phone"
+                placeholder="10 digit mobile number"
+                pattern="[0-9]{10}"
+                required
+              />
+            </div>
+
+            <!-- FATHER + MOTHER NAME -->
+            <div class="input-group">
+              <label>Father Name</label>
+              <input
+                type="text"
+                id="fatherName"
+                placeholder="Enter father's name"
+              />
+            </div>
+
+            <div class="input-group">
+              <label>Mother Name</label>
+              <input
+                type="text"
+                id="motherName"
+                placeholder="Enter mother's name"
+              />
+            </div>
+
+            <!-- ADDRESS -->
+            <div class="input-group full">
+              <label>Address</label>
+              <textarea
+                id="address"
+                placeholder="Enter student's address"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- FORM BUTTONS -->
+          <div class="form-actions">
+            <button type="button" class="secondary-btn" onclick="closeForm()">
+              Cancel
+            </button>
+
+            <button type="submit" class="primary-btn">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Save Student
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= TOAST ================= -->
+    <div class="toast" id="toast">
+      <i class="fa-solid fa-circle-check"></i>
+      <span id="toastMessage"> Success </span>
+    </div>
+
+    <!-- JS -->
+    <script src="sms.js"></script>
+  </body>
+</html>
